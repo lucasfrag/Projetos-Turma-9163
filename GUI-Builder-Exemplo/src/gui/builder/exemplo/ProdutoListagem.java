@@ -4,6 +4,10 @@
  */
 package gui.builder.exemplo;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author tiluc
@@ -30,8 +34,21 @@ public class ProdutoListagem extends javax.swing.JFrame {
         TextoDeBoasVindas = new javax.swing.JLabel();
         TextoDeFeedback = new javax.swing.JLabel();
         BotaoSair = new javax.swing.JButton();
+        AreaDaTabela = new javax.swing.JPanel();
+        ScrollDaTabela = new javax.swing.JScrollPane();
+        TabelaDeProdutos = new javax.swing.JTable();
+        BotaoNovoProduto = new javax.swing.JButton();
+        BotaoExcluir = new javax.swing.JButton();
+        BotaoVender = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         TextoDeBoasVindas.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         TextoDeBoasVindas.setText("Lista de Produtos");
@@ -57,7 +74,7 @@ public class ProdutoListagem extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(AreaDeBoasVindasLayout.createSequentialGroup()
                         .addComponent(TextoDeBoasVindas)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BotaoSair)))
                 .addContainerGap())
         );
@@ -73,21 +90,73 @@ public class ProdutoListagem extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        TabelaDeProdutos.setModel(montarTabela());
+        ScrollDaTabela.setViewportView(TabelaDeProdutos);
+
+        BotaoNovoProduto.setText("+ Novo Produto");
+        BotaoNovoProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoNovoProdutoActionPerformed(evt);
+            }
+        });
+
+        BotaoExcluir.setText("Excluir");
+        BotaoExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoExcluirActionPerformed(evt);
+            }
+        });
+
+        BotaoVender.setText("Vender");
+
+        javax.swing.GroupLayout AreaDaTabelaLayout = new javax.swing.GroupLayout(AreaDaTabela);
+        AreaDaTabela.setLayout(AreaDaTabelaLayout);
+        AreaDaTabelaLayout.setHorizontalGroup(
+            AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AreaDaTabelaLayout.createSequentialGroup()
+                .addGroup(AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ScrollDaTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(AreaDaTabelaLayout.createSequentialGroup()
+                        .addComponent(BotaoNovoProduto)
+                        .addGap(18, 18, 18)
+                        .addComponent(BotaoExcluir)
+                        .addGap(18, 18, 18)
+                        .addComponent(BotaoVender)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        AreaDaTabelaLayout.setVerticalGroup(
+            AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AreaDaTabelaLayout.createSequentialGroup()
+                .addComponent(ScrollDaTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BotaoNovoProduto)
+                    .addComponent(BotaoExcluir)
+                    .addComponent(BotaoVender))
+                .addGap(0, 28, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(AreaDeBoasVindas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AreaDeBoasVindas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(AreaDaTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 4, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(AreaDeBoasVindas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(AreaDaTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -97,6 +166,25 @@ public class ProdutoListagem extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_BotaoSairActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        TabelaDeProdutos.setModel(montarTabela());
+        ScrollDaTabela.setViewportView(TabelaDeProdutos);
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void BotaoNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoNovoProdutoActionPerformed
+        // TODO add your handling code here:
+        ProdutoCadastro tela = new ProdutoCadastro();
+        tela.setVisible(true);
+    }//GEN-LAST:event_BotaoNovoProdutoActionPerformed
+
+    private void BotaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoExcluirActionPerformed
+        // TODO add your handling code here:
+        ListaProduto.excluir(getPosicao());
+        TabelaDeProdutos.setModel(montarTabela());
+        ScrollDaTabela.setViewportView(TabelaDeProdutos);
+    }//GEN-LAST:event_BotaoExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -133,9 +221,61 @@ public class ProdutoListagem extends javax.swing.JFrame {
         });
     }
 
+    
+    
+    
+    
+    
+    private DefaultTableModel montarTabela() {
+        String[] colunas = {"ID", "Nome", "Valor", "Quantidade", "Estado", "Categoria"};
+        
+        // Criamos a tabela
+        DefaultTableModel tabela = new DefaultTableModel(colunas, 0);
+        
+        //Pegar os dados da lista de produtos
+        ArrayList<Produto> lista = ListaProduto.Listar();
+        
+        for (int i=0; i < lista.size(); i++) {
+            Produto p = lista.get(i);
+            String[] linha = {
+                Integer.toString(p.getId()),
+                p.getNome(),
+                Double.toString(p.getPreco()),
+                Integer.toString(p.getQuantidade()),
+                p.getEstado(),
+                p.getCategoria()
+            };
+            
+            tabela.addRow(linha);
+        }
+        
+        return tabela;
+    }
+    
+    
+    
+    private int getPosicao() {
+        int posicao = TabelaDeProdutos.getSelectedRow();
+        
+        if(posicao <= 0) {
+            JOptionPane.showMessageDialog(null, "Selecione um item para excluir.");
+        }
+                
+        return posicao;
+    }
+    
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AreaDaTabela;
     private javax.swing.JPanel AreaDeBoasVindas;
+    private javax.swing.JButton BotaoExcluir;
+    private javax.swing.JButton BotaoNovoProduto;
     private javax.swing.JButton BotaoSair;
+    private javax.swing.JButton BotaoVender;
+    private javax.swing.JScrollPane ScrollDaTabela;
+    private javax.swing.JTable TabelaDeProdutos;
     private javax.swing.JLabel TextoDeBoasVindas;
     private javax.swing.JLabel TextoDeFeedback;
     // End of variables declaration//GEN-END:variables

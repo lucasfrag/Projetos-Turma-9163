@@ -311,27 +311,40 @@ public class ProdutoCadastro extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         Produto p = new Produto();
-        p.setNome(NomeCampo.getText());
-        p.setPreco( Double.parseDouble(PrecoCampo.getText()));
-        p.setQuantidade(Integer.parseInt(QuantidadeCampo.getText()));
         
-        if (EstadoNovo.isSelected()){
-            p.setEstado("Novo");
-        } else if (EstadoUsado.isSelected()) {
-            p.setEstado("Usado");
+        try { 
+            p.setNome(NomeCampo.getText());
+            p.setPreco( Double.parseDouble(PrecoCampo.getText()));
+            p.setQuantidade(Integer.parseInt(QuantidadeCampo.getText()));
+
+            if (EstadoNovo.isSelected()){
+                p.setEstado("Novo");
+            } else if (EstadoUsado.isSelected()) {
+                p.setEstado("Usado");
+            } else {
+                p.setEstado("");
+            }
+            
+            if ( CategoriaComboBox.getSelectedItem().toString().equalsIgnoreCase("Selecione uma opção:")  ) {
+                p.setCategoria("");
+            } else {
+                p.setCategoria(CategoriaComboBox.getSelectedItem().toString());
+            }
+            
+
+            if ( ListaProduto.adicionar(p) ) {
+                Feedback.setText("O seguinte produto foi cadastrado:");
+                NomeFeedback.setText("Nome: " + p.getNome());
+                PrecoFeedback.setText("Preço: " + p.getPreco());
+                QuantidadeFeedback.setText("Quantidade: " + p.getQuantidade());
+                EstadoFeedback.setText("Estado: " + p.getEstado());
+                CategoriaFeedback.setText("Categoria: " + p.getCategoria());
+            }
+
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Produto não pode ser cadastrado! Tente novamente.");
+            System.out.println(e);
         }
-        
-        p.setCategoria(CategoriaComboBox.getSelectedItem().toString());
-        
-        JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
-        
-        Feedback.setText("O seguinte produto foi cadastrado:");
-        NomeFeedback.setText("Nome: " + p.getNome());
-        PrecoFeedback.setText("Preço: " + p.getPreco());
-        QuantidadeFeedback.setText("Quantidade: " + p.getQuantidade());
-        EstadoFeedback.setText("Estado: " + p.getEstado());
-        CategoriaFeedback.setText("Categoria: " + p.getCategoria());
-        
         
     }//GEN-LAST:event_SalvarBotaoActionPerformed
 
