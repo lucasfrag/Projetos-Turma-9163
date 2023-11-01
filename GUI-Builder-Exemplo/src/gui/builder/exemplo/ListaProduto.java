@@ -49,7 +49,7 @@ public class ListaProduto {
 
     public static boolean excluir(int id) {
         try {
-            if (id <= 0) {
+            if (id <= -1) {
                 JOptionPane.showMessageDialog(null, "Selecione um item para excluir.");
             } else {
                 lista.remove(id);

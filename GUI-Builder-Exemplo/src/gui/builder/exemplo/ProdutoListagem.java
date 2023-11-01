@@ -40,6 +40,10 @@ public class ProdutoListagem extends javax.swing.JFrame {
         BotaoNovoProduto = new javax.swing.JButton();
         BotaoExcluir = new javax.swing.JButton();
         BotaoVender = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -47,6 +51,17 @@ public class ProdutoListagem extends javax.swing.JFrame {
                 formWindowGainedFocus(evt);
             }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
+        AreaDeBoasVindas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                AreaDeBoasVindasKeyPressed(evt);
             }
         });
 
@@ -108,6 +123,11 @@ public class ProdutoListagem extends javax.swing.JFrame {
         });
 
         BotaoVender.setText("Vender");
+        BotaoVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoVenderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout AreaDaTabelaLayout = new javax.swing.GroupLayout(AreaDaTabela);
         AreaDaTabela.setLayout(AreaDaTabelaLayout);
@@ -133,8 +153,26 @@ public class ProdutoListagem extends javax.swing.JFrame {
                     .addComponent(BotaoNovoProduto)
                     .addComponent(BotaoExcluir)
                     .addComponent(BotaoVender))
-                .addGap(0, 28, Short.MAX_VALUE))
+                .addGap(0, 5, Short.MAX_VALUE))
         );
+
+        jMenu1.setText("File");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        jMenuItem1.setText("Atualizar a lista de produtos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -186,6 +224,35 @@ public class ProdutoListagem extends javax.swing.JFrame {
         ScrollDaTabela.setViewportView(TabelaDeProdutos);
     }//GEN-LAST:event_BotaoExcluirActionPerformed
 
+    private void BotaoVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoVenderActionPerformed
+        // TODO add your handling code here:
+        
+        int linhaSelecionada = getPosicao();
+        ProdutoVenda tela = new ProdutoVenda(linhaSelecionada);
+        tela.setVisible(true);
+        
+    }//GEN-LAST:event_BotaoVenderActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Tecla foi pressionada.");
+        if(evt.getKeyCode() == evt.VK_F5) {
+            
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void AreaDeBoasVindasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AreaDeBoasVindasKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_AreaDeBoasVindasKeyPressed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        TabelaDeProdutos.setModel(montarTabela());
+        ScrollDaTabela.setViewportView(TabelaDeProdutos);
+        JOptionPane.showMessageDialog(null, "Lista atualizada com sucesso!");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -227,23 +294,33 @@ public class ProdutoListagem extends javax.swing.JFrame {
     
     
     private DefaultTableModel montarTabela() {
-        String[] colunas = {"ID", "Nome", "Valor", "Quantidade", "Estado", "Categoria"};
+        String[] colunas = {"ID", "Nome", "Valor", "Quantidade", "Estado", "Categoria", "Vendido"};
         
         // Criamos a tabela
         DefaultTableModel tabela = new DefaultTableModel(colunas, 0);
         
         //Pegar os dados da lista de produtos
-        ArrayList<Produto> lista = ListaProduto.Listar();
+        ArrayList<Produto> lista = ProdutoCSV.ListarProduto();
+        //ArrayList<Produto> lista = ListaProduto.Listar();
         
         for (int i=0; i < lista.size(); i++) {
             Produto p = lista.get(i);
+            
+            String vendido = "";
+            if (p.isVendido()) {
+                vendido = "Sim";
+            } else {
+                vendido = "Não";
+            }
+            
             String[] linha = {
                 Integer.toString(p.getId()),
                 p.getNome(),
                 Double.toString(p.getPreco()),
                 Integer.toString(p.getQuantidade()),
                 p.getEstado(),
-                p.getCategoria()
+                p.getCategoria(),
+                vendido
             };
             
             tabela.addRow(linha);
@@ -257,13 +334,13 @@ public class ProdutoListagem extends javax.swing.JFrame {
     private int getPosicao() {
         int posicao = TabelaDeProdutos.getSelectedRow();
         
-        if(posicao <= 0) {
+        if(posicao <= -1) {
             JOptionPane.showMessageDialog(null, "Selecione um item para excluir.");
         }
                 
         return posicao;
     }
-    
+   
     
     
     
@@ -278,5 +355,9 @@ public class ProdutoListagem extends javax.swing.JFrame {
     private javax.swing.JTable TabelaDeProdutos;
     private javax.swing.JLabel TextoDeBoasVindas;
     private javax.swing.JLabel TextoDeFeedback;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }

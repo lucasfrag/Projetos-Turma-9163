@@ -204,8 +204,18 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Nome:"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="Texto informando que o campo abaixo deve ser preenchido com &quot;nome&quot;."/>
+          </AccessibilityProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="NomeCampo">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Preencha o campo com o nome do produto."/>
+          </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Campo de entrada de dados (nome)"/>
+            <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="Campo de entrada de dados para ser informado o nome do produto."/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NomeCampoActionPerformed"/>
           </Events>
@@ -240,6 +250,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="PrecoCampo">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Exemplo:"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="QuantidadeTexto">
           <Properties>

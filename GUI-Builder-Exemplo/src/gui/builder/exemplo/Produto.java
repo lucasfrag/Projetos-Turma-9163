@@ -9,17 +9,23 @@ public class Produto {
     private String estado;
     private String categoria;
     
+    // Adaptação para simular a atividade 3
+    private boolean vendido;
+    private String numeroNotaFiscal;
+
     public Produto() {
         
     }
-
-    public Produto(int id, String nome, double preco, int quantidade, String estado, String categoria) {
+    
+    public Produto(int id, String nome, double preco, int quantidade, String estado, String categoria, boolean vendido, String numeroNotaFiscal) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
         this.quantidade = quantidade;
         this.estado = estado;
         this.categoria = categoria;
+        this.vendido = vendido;
+        this.numeroNotaFiscal = numeroNotaFiscal;
     }
 
     public int getId() {
@@ -69,6 +75,23 @@ public class Produto {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+    
+    public boolean isVendido() {
+        return vendido;
+    }
+
+    public void setVendido(boolean vendido) {
+        this.vendido = vendido;
+    }
+
+    public String getNumeroNotaFiscal() {
+        return numeroNotaFiscal;
+    }
+
+    public void setNumeroNotaFiscal(String numeroNotaFiscal) {
+        this.numeroNotaFiscal = numeroNotaFiscal;
+    }
+    
     
     
 }

@@ -100,6 +100,7 @@ public class ProdutoCadastro extends javax.swing.JFrame {
         NomeTexto.setLabelFor(NomeCampo);
         NomeTexto.setText("Nome:");
 
+        NomeCampo.setToolTipText("Preencha o campo com o nome do produto.");
         NomeCampo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NomeCampoActionPerformed(evt);
@@ -120,6 +121,8 @@ public class ProdutoCadastro extends javax.swing.JFrame {
         EstadoUsado.setText("Usado");
 
         PrecoTexto.setText("Preço (R$):");
+
+        PrecoCampo.setToolTipText("Exemplo:");
 
         QuantidadeTexto.setText("Quantidade:");
 
@@ -194,6 +197,10 @@ public class ProdutoCadastro extends javax.swing.JFrame {
                 .addComponent(SalvarBotao)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
+
+        NomeTexto.getAccessibleContext().setAccessibleDescription("Texto informando que o campo abaixo deve ser preenchido com \"nome\".");
+        NomeCampo.getAccessibleContext().setAccessibleName("Campo de entrada de dados (nome)");
+        NomeCampo.getAccessibleContext().setAccessibleDescription("Campo de entrada de dados para ser informado o nome do produto.");
 
         AreaDeFeedback.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -331,8 +338,10 @@ public class ProdutoCadastro extends javax.swing.JFrame {
                 p.setCategoria(CategoriaComboBox.getSelectedItem().toString());
             }
             
-
-            if ( ListaProduto.adicionar(p) ) {
+            p.setVendido(false);
+            
+            if ( ProdutoCSV.AdicionarProduto(p) ) {
+            //if ( ListaProduto.adicionar(p) ) {
                 Feedback.setText("O seguinte produto foi cadastrado:");
                 NomeFeedback.setText("Nome: " + p.getNome());
                 PrecoFeedback.setText("Preço: " + p.getPreco());
