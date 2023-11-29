@@ -10,12 +10,13 @@ public class Produto {
     private String categoria;
     private boolean vendido;
     private String numeroNotaFiscal;
+    private String dataDaCompra;
 
     public Produto() {
         
     }
-    
-    public Produto(int id, String nome, double preco, int quantidade, String estado, String categoria, boolean vendido, String numeroNotaFiscal) {
+
+    public Produto(int id, String nome, double preco, int quantidade, String estado, String categoria, boolean vendido, String numeroNotaFiscal, String dataDaCompra) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
@@ -24,6 +25,7 @@ public class Produto {
         this.categoria = categoria;
         this.vendido = vendido;
         this.numeroNotaFiscal = numeroNotaFiscal;
+        this.dataDaCompra = dataDaCompra;
     }
 
     public int getId() {
@@ -90,6 +92,27 @@ public class Produto {
         this.numeroNotaFiscal = numeroNotaFiscal;
     }
     
+    public String getDataDaCompra() {
+        return dataDaCompra;
+    }
+
+    public void setDataDaCompra(String dataDaCompra) {
+        this.dataDaCompra = dataDaCompra;
+    }    
+    
+    // Exemplo: 28/11/2023 para 2023-11-28
+    public static String converterParaSQL(String dataAntiga) {
+        String[] partesData = dataAntiga.split("/");
+        String dataNova = partesData[2] + "-" + partesData[1] + "-" + partesData[0];
+        return dataNova;
+    }
+    
+    // Exemplo: 2023-11-28 para 28/11/2023
+    public static String converterParaJava(String dataAntiga) {
+        String[] partesData = dataAntiga.split("-");
+        String dataNova = partesData[2] + "/" + partesData[1] + "/" + partesData[0];
+        return dataNova;        
+    }
     
     
 }

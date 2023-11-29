@@ -8,6 +8,10 @@ public class ConexaoJDBC {
 
     private Connection conexao;
 
+    public Connection getConexao() {
+        return conexao;
+    }
+    
     public void conectar() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
