@@ -43,6 +43,9 @@ public class ProdutoListagem extends javax.swing.JFrame {
         BotaoNovoProduto = new javax.swing.JButton();
         BotaoExcluir = new javax.swing.JButton();
         BotaoVender = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        PesquisaTextField = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -108,7 +111,7 @@ public class ProdutoListagem extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        TabelaDeProdutos.setModel(montarTabela());
+        TabelaDeProdutos.setModel(montarTabela(ProdutoDAO.listarTodos()));
         ScrollDaTabela.setViewportView(TabelaDeProdutos);
 
         BotaoNovoProduto.setText("+ Novo Produto");
@@ -132,28 +135,49 @@ public class ProdutoListagem extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Pesquisar por nome:");
+
+        jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout AreaDaTabelaLayout = new javax.swing.GroupLayout(AreaDaTabela);
         AreaDaTabela.setLayout(AreaDaTabelaLayout);
         AreaDaTabelaLayout.setHorizontalGroup(
             AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ScrollDaTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(AreaDaTabelaLayout.createSequentialGroup()
                 .addComponent(BotaoNovoProduto)
                 .addGap(18, 18, 18)
                 .addComponent(BotaoExcluir)
                 .addGap(18, 18, 18)
                 .addComponent(BotaoVender))
-            .addComponent(ScrollDaTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(AreaDaTabelaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PesquisaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1))
         );
         AreaDaTabelaLayout.setVerticalGroup(
             AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AreaDaTabelaLayout.createSequentialGroup()
+                .addGroup(AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(PesquisaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(9, 9, 9)
                 .addComponent(ScrollDaTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(AreaDaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotaoNovoProduto)
                     .addComponent(BotaoExcluir)
                     .addComponent(BotaoVender))
-                .addGap(0, 5, Short.MAX_VALUE))
+                .addGap(0, 19, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -207,7 +231,7 @@ public class ProdutoListagem extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         // TODO add your handling code here:
-        TabelaDeProdutos.setModel(montarTabela());
+        TabelaDeProdutos.setModel(montarTabela(ProdutoDAO.listarTodos()));
         ScrollDaTabela.setViewportView(TabelaDeProdutos);
     }//GEN-LAST:event_formWindowGainedFocus
 
@@ -219,8 +243,14 @@ public class ProdutoListagem extends javax.swing.JFrame {
 
     private void BotaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoExcluirActionPerformed
         // TODO add your handling code here:
-        //ListaProduto.excluir(getPosicao());
-        TabelaDeProdutos.setModel(montarTabela());
+        int id = getPosicao();
+        
+        int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esse registro?");
+        if (resposta == 0) {
+          ProdutoDAO.excluir(id);
+        } 
+        
+        TabelaDeProdutos.setModel(montarTabela(ProdutoDAO.listarTodos()));
         ScrollDaTabela.setViewportView(TabelaDeProdutos);
     }//GEN-LAST:event_BotaoExcluirActionPerformed
 
@@ -228,8 +258,8 @@ public class ProdutoListagem extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         int linhaSelecionada = getPosicao();
-        //ProdutoVenda tela = new ProdutoVenda(linhaSelecionada);
-        //tela.setVisible(true);
+        ProdutoVenda tela = new ProdutoVenda(linhaSelecionada);
+        tela.setVisible(true);
         
     }//GEN-LAST:event_BotaoVenderActionPerformed
 
@@ -248,10 +278,17 @@ public class ProdutoListagem extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        TabelaDeProdutos.setModel(montarTabela());
+        TabelaDeProdutos.setModel(montarTabela(ProdutoDAO.listarTodos()));
         ScrollDaTabela.setViewportView(TabelaDeProdutos);
         JOptionPane.showMessageDialog(null, "Lista atualizada com sucesso!");
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        List<Produto> lista = ProdutoDAO.filtrarPorNome(PesquisaTextField.getText());
+        TabelaDeProdutos.setModel(montarTabela(lista));
+        ScrollDaTabela.setViewportView(TabelaDeProdutos);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,14 +331,12 @@ public class ProdutoListagem extends javax.swing.JFrame {
     
     
     
-    private DefaultTableModel montarTabela() {
+    private DefaultTableModel montarTabela(List<Produto> lista) {
         String[] colunas = {"ID", "Nome", "Valor", "Quantidade", "Estado", "Categoria", "Vendido", "Data da Compra"};
         
         // Criamos a tabela
         DefaultTableModel tabela = new DefaultTableModel(colunas, 0);
-        
-        //Pegar os dados da lista de produtos
-        List<Produto> lista = ProdutoDAO.listarTodos();
+       
         //ArrayList<Produto> lista = ListaProduto.Listar();
         
         for (int i=0; i < lista.size(); i++) {
@@ -340,7 +375,7 @@ public class ProdutoListagem extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Selecione um item para excluir.");
         }
                 
-        return posicao;
+        return Integer.parseInt( (String) TabelaDeProdutos.getValueAt(posicao, 0) );
     }
    
     
@@ -353,10 +388,13 @@ public class ProdutoListagem extends javax.swing.JFrame {
     private javax.swing.JButton BotaoNovoProduto;
     private javax.swing.JButton BotaoSair;
     private javax.swing.JButton BotaoVender;
+    private javax.swing.JTextField PesquisaTextField;
     private javax.swing.JScrollPane ScrollDaTabela;
     private javax.swing.JTable TabelaDeProdutos;
     private javax.swing.JLabel TextoDeBoasVindas;
     private javax.swing.JLabel TextoDeFeedback;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
